@@ -1,0 +1,10 @@
+dist/ 
+.env 
+.DS_Store 
+npm-debug.log* 
+yarn-debug.log* 
+yarn-error.log* 
+.parcel-cache/ 
+.next/ 
+.vercel/ 
+coverage/ 
