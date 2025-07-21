@@ -19,6 +19,15 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# --- Model List ---
+MODELS = [
+    ("gemini-pro", "Gemini Pro (Text)"),
+    ("gemini-1.5-pro-latest", "Gemini 1.5 Pro"),
+    ("gemini-1.5-flash-latest", "Gemini 1.5 Flash"),
+    ("gemma-3-4b-it", "Gemma 3 4B IT"),
+    ("gemma-3-1b-it", "Gemma 3 1B IT"),
+]
+
 # --- Agent Prompt Builders ---
 def mental_health_prompt(user_input):
     return f"""You are a swarm of compassionate mental health coaches. Collaborate to provide supportive, practical, and empathetic advice for the following user concern:\n\n"{user_input}"\n\nRespond as a team, offering actionable steps and emotional support."""
@@ -64,8 +73,8 @@ AGENTS = [
 ]
 
 # --- Gemini API Call ---
-def call_gemini(prompt, api_key):
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={api_key}"
+def call_gemini(prompt, api_key, model):
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
     headers = {"Content-Type": "application/json"}
     data = {
         "contents": [{"parts": [{"text": prompt}]}]
@@ -91,6 +100,12 @@ for i, agent in enumerate(AGENTS):
     with tabs[i]:
         st.markdown(f"<div class='swarm-card'>", unsafe_allow_html=True)
         st.subheader(f"{agent['emoji']} {agent['name']}")
+        model_value = st.selectbox(
+            "Choose AI Model",
+            options=[m[0] for m in MODELS],
+            format_func=lambda v: dict(MODELS)[v],
+            key=f"model_{i}"
+        )
         user_input = st.text_input("Your question:", key=f"input_{i}")
         if st.button("Ask", key=f"btn_{i}", help="Send your question to the Swarm Agent"):
             if not api_key:
@@ -100,6 +115,6 @@ for i, agent in enumerate(AGENTS):
             else:
                 with st.spinner("Thinking..."):
                     prompt = agent["prompt_builder"](user_input)
-                    response = call_gemini(prompt, api_key)
+                    response = call_gemini(prompt, api_key, model_value)
                 st.markdown(f"<div class='fade-in' style='margin-top:1.5rem;'><b>Response:</b><br>{response}</div>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True) 
