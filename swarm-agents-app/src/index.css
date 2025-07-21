@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply min-h-screen bg-green-50 font-sans;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #e0f7ef 0%, #f0fdf4 100%);
+  background-image: url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="20" cy="20" r="1.5" fill="%2322c55e" fill-opacity="0.10"/%3E%3C/svg%3E');
+}
+
+h1, h2 {
+  font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+  @apply font-bold;
+}
+
+@layer utilities {
+  .fade-in {
+    @apply opacity-0;
+    animation: fadeIn 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+  .card-hover {
+    @apply transition-transform duration-300 hover:scale-105 hover:shadow-2xl;
+  }
+  .btn-press {
+    @apply transition-transform duration-100 active:scale-95;
+  }
+  .btn-gradient {
+    @apply bg-gradient-to-r from-green-400 via-green-500 to-green-600 shadow-lg;
+  }
+  .glass {
+    @apply bg-white/80 backdrop-blur-md border border-green-100 shadow-xl;
+  }
+} 
